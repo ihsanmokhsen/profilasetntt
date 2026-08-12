@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Editor
+.vscode/
+.idea/
+
+# Filesystem cache
+Thumbs.db

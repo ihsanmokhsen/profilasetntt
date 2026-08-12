@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil Aset NTT</title>
+  <link rel="icon" href="asset/logo.png">
+
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin="anonymous"/>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Leaflet Draw CSS -->
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css"
+        crossorigin="anonymous"/>
+
+</head>
+<body>
+
+  <!-- Splash Screen -->
+  <div id="splash" class="splash">
+    <div class="splash-inner">
+      <img src="asset/popup.webp" alt="Profil Aset NTT" class="splash-img">
+      <p class="splash-tap">Ketuk untuk masuk</p>
+    </div>
+  </div>
+
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="asset/logo.png" alt="Logo" class="brand-logo">
+      <div class="brand-text">
+        <strong>PROFIL ASET NTT</strong>
+        <span class="muted">PROVINSI NUSA TENGGARA TIMUR</span>
+      </div>
+      <button id="closeSidebar" class="sidebar-close" title="Tutup sidebar">✕</button>
+    </div>
+
+    <div class="filters">
+      <select id="kabupaten" class="search">
+        <option value="">Semua Kabupaten/Kota</option>
+      </select>
+
+      <input id="nama" class="search" type="search" placeholder="🔍 Cari Pemanfaat ...">
+      <select id="opd" class="search">
+        <option value="">Semua Perangkat Daerah</option>
+      </select>
+    </div>
+
+    <div id="stats" class="stats"></div>
+    <div id="list" class="list"></div>
+    <div id="empty" class="empty">Aset tidak ditemukan.</div>
+  </aside>
+
+  <main class="map-wrap">
+    <div class="map-header">
+      <div class="map-title">
+        <img src="asset/logo.png" alt="Logo" class="map-logo">
+        <div>
+          PROFIL ASET NTT
+          <small>Peta Pemanfaat & Aset Provinsi NTT</small>
+        </div>
+      </div>
+      <button id="openSidebar" class="sidebar-open-btn" title="Buka sidebar">☰</button>
+      <button class="refresh" title="Reset peta" onclick="resetMap()">↻</button>
+      <button id="toggleSidebarBtn" class="btn-toggle-sidebar" title="Sembunyikan/Tampilkan Sidebar">◀</button>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="legend">
+      <div class="legend-row"><span class="dot blue"></span> Dimanfaatkan / Pihak Ketiga</div>
+      <div class="legend-row"><span class="dot green"></span> Tanah Kosong (Belum Dimanfaatkan)</div>
+      <div class="legend-row"><span class="dot red"></span> Area Bertanda — Siap Dikerjasamakan</div>
+      <div class="legend-row"><span class="dot-pulse"></span> Lokasi terpilih</div>
+    </div>
+
+    <button id="toggleLabels" class="label-toggle" title="Sembunyikan/Tampilkan Label">🏷 Label</button>
+  </main>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin="anonymous"></script>
+
+<!-- Leaflet Draw JS -->
+<script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"
+        crossorigin="anonymous"></script>
+
+<!-- Custom JS -->
+<script src="data.js"></script>
+<script src="marked-areas.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

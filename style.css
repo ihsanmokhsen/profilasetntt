@@ -1,0 +1,870 @@
+/* ============================================================
+   Profil Aset NTT
+   Peta Pemanfaat Aset Pihak Ketiga
+   Provinsi Nusa Tenggara Timur
+   ============================================================ */
+
+
+/* ---- Splash Screen ---- */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity .4s ease, visibility .4s ease;
+}
+.splash.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+.splash-inner {
+  text-align: center;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+.splash-img {
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.2);
+  animation: splash-pop .5s ease-out;
+}
+.splash-tap {
+  margin-top: 14px;
+  font-size: 14px;
+  color: #888;
+  animation: splash-blink 1.5s ease-in-out infinite;
+}
+@keyframes splash-pop {
+  from { transform: scale(.9); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+@keyframes splash-blink {
+  0%, 100% { opacity: .4; }
+  50%      { opacity: 1; }
+}
+
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #202d63;
+}
+
+/* ---- Layout Utama ---- */
+.app {
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* ---- Sidebar ---- */
+.sidebar {
+  width: 335px;
+  min-width: 335px;
+  background: #fff;
+  border-right: 1px solid #d7dbe5;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  transition: all .3s ease;
+}
+
+.sidebar.collapsed {
+  width: 0;
+  min-width: 0;
+  overflow: hidden;
+  border-right: none;
+}
+
+.sidebar-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #888;
+  padding: 4px 6px;
+  line-height: 1;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.sidebar-close:hover { color: #c00; }
+
+.sidebar-open-btn {
+  background: #fff;
+  border: 1px solid #d7dbe5;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  width: 38px;
+  height: 38px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+  flex-shrink: 0;
+  pointer-events: auto;
+  order: -1;
+  margin-right: 8px;
+}
+.sidebar-open-btn:hover { background: #f0f0f0; }
+
+.brand {
+  min-height: 60px;
+  padding: 10px 22px;
+  border-bottom: 1px solid #d7dbe5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.brand-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.brand-text strong {
+  font-weight: 800;
+  display: block;
+}
+
+.brand-text .muted {
+  font-size: 11px;
+  color: #273563;
+  display: block;
+  margin-top: 1px;
+}
+
+.brand strong { font-weight: 800; }
+
+.brand .muted { color: #273563; }
+
+/* ---- Filter ---- */
+.filters { padding: 14px 8px 8px; }
+
+.search {
+  width: 100%;
+  height: 44px;
+  margin-bottom: 12px;
+  border: 1px solid #dfe3eb;
+  border-radius: 5px;
+  padding: 0 15px;
+  outline: none;
+  color: #555;
+  font-size: 15px;
+  background: #fff;
+}
+
+.search:focus {
+  border-color: #8190bd;
+  box-shadow: 0 0 0 2px rgba(80, 100, 160, .08);
+}
+
+/* ---- Stats Ringkasan ---- */
+.stats {
+  display: flex;
+  gap: 6px;
+  padding: 8px 10px;
+  border-bottom: 1px solid #eef0f5;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  flex: 1;
+  min-width: 60px;
+  text-align: center;
+  padding: 6px 4px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.stat-item .stat-num {
+  font-size: 20px;
+  font-weight: 800;
+  display: block;
+  line-height: 1.1;
+}
+
+.stat-total    { background: #eef2ff; color: #263567; }
+.stat-aktif    { background: #fce8e6; color: #c5221f; }
+.stat-kosong   { background: #e6f4ea; color: #137333; }
+
+/* ---- Daftar Aset ---- */
+.list {
+  border-top: 1px solid #eee;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Animasi marker terpilih */
+@keyframes markerPulse {
+  0%   { transform: rotate(-45deg) scale(1); }
+  50%  { transform: rotate(-45deg) scale(1.5); }
+  100% { transform: rotate(-45deg) scale(1); }
+}
+
+.leaflet-marker-icon.selected-marker > div {
+  animation: markerPulse 0.5s ease-in-out 3;
+  box-shadow: 0 0 0 6px rgba(41, 136, 232, 0.4), 0 1px 4px #555 !important;
+}
+
+.asset {
+  display: flex;
+  gap: 14px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e3e5eb;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.asset:hover { background: #f7f8fc; }
+
+.asset-marked {
+  border-left: 3px solid #cc0000;
+  background: #fff0f0;
+}
+
+.asset-marked:hover { background: #ffe8e8; }
+
+.pin {
+  flex: 0 0 16px;
+  margin-top: 3px;
+  margin-right: 4px;
+}
+
+.asset-title {
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.35;
+  color: #293567;
+}
+
+.asset-meta {
+  font-size: 12px;
+  color: #78809a;
+  margin-top: 4px;
+}
+
+.empty {
+  padding: 25px 20px;
+  text-align: center;
+  color: #8a8fa1;
+  display: none;
+}
+
+/* ---- Peta ---- */
+.map-wrap {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#map {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.map-header {
+  position: absolute;
+  z-index: 900;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: rgba(255,255,255,.96);
+  border-bottom: 1px solid #d7dbe5;
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  pointer-events: none;
+}
+
+.map-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+
+.map-title small {
+  display: block;
+  font-weight: 400;
+  font-size: 11px;
+  color: #9a9ca4;
+  margin-top: 2px;
+}
+
+.map-logo {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.refresh {
+  margin-left: auto;
+  pointer-events: auto;
+  border: 0;
+  background: transparent;
+  font-size: 23px;
+  cursor: pointer;
+  color: #111;
+  padding: 6px;
+  transition: transform .3s;
+}
+
+.refresh:hover { transform: rotate(45deg); }
+
+/* ---- Legenda ---- */
+.legend {
+  position: absolute;
+  z-index: 900;
+  left: 10px;
+  top: 132px;
+  background: rgba(255,255,255,.95);
+  padding: 10px 13px;
+  border-radius: 5px;
+  box-shadow: 0 1px 7px rgba(0,0,0,.18);
+  color: #4a526d;
+  font-size: 12px;
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 4px 0;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  background: #2988e8;
+  flex-shrink: 0;
+}
+
+.dot.blue { background: #2988e8; }
+
+.dot.green { background: #34a853; }
+
+.dot.red { background: #cc0000; }
+
+.dot-pulse {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #2988e8;
+  flex-shrink: 0;
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(41,136,232,.5); }
+  70% { box-shadow: 0 0 0 8px rgba(41,136,232,0); }
+  100% { box-shadow: 0 0 0 0 rgba(41,136,232,0); }
+}
+
+/* ---- Panel Koordinat ---- */
+.coord-panel {
+  position: absolute;
+  z-index: 902;
+  right: 18px;
+  bottom: 100px;
+  width: 280px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.22);
+  font-size: 12px;
+}
+
+.coord-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.coord-header button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #999;
+  padding: 0 4px;
+}
+
+.coord-header button:hover { color: #333; }
+
+/* ---- Tombol Kedip (Siap Dikerjasamakan) ---- */
+@keyframes blink-color {
+  0%, 100% { color: #2988e8; }
+  50% { color: rgba(41,136,232,.3); }
+}
+
+.wa-btn-blink {
+  display: block;
+  text-align: center;
+  font-weight: 700;
+  text-decoration: none;
+  animation: blink-color 1.2s ease-in-out infinite;
+}
+
+.wa-btn-blink:hover {
+  animation: none;
+  color: #2988e8;
+}
+
+/* ---- Popup Leaflet ---- */
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.18);
+}
+
+.leaflet-popup-content {
+  margin: 14px 16px;
+  min-width: 280px;
+  max-width: 340px;
+}
+
+.popup h4 {
+  margin: 0 0 10px;
+  color: #263567;
+  font-size: 15px;
+  line-height: 1.4;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #eef0f5;
+}
+
+.popup-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.popup-table td {
+  padding: 3px 4px;
+  vertical-align: top;
+}
+
+.popup-table td:first-child {
+  color: #7a8099;
+  white-space: nowrap;
+  font-weight: 600;
+  width: 75px;
+}
+
+.popup-table td:last-child {
+  color: #333;
+}
+
+/* Badge */
+.badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge-baik { background: #e6f4ea; color: #137333; }
+
+.badge-rusak-ringan { background: #fef7e0; color: #b06000; }
+
+.badge-green { background: #e6f4ea; color: #137333; }
+
+.badge-orange { background: #fef7e0; color: #b06000; }
+
+.badge-red { background: #fce8e6; color: #c5221f; }
+
+/* Badge status pemanfaat */
+.badge-kerjasama { background: #c8e6c9; color: #1b5e20; font-weight: 600; }
+
+.badge-perlu-konfirmasi { background: #fff3cd; color: #856404; }
+
+.badge-belum-dimanfaatkan { background: #e6f4ea; color: #137333; }
+
+.badge-dimanfaatkan { background: #d6e8fc; color: #185abc; font-weight: 600; }
+
+/* Popup section divider */
+.popup-section {
+  margin-bottom: 6px;
+}
+
+.popup-section--detail {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #d0d4e0;
+}
+
+/* Collapsible detail */
+.popup-detail-collapse {
+  display: none;
+}
+.popup-detail-collapse.show {
+  display: block;
+}
+
+.popup-detail-btn {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 7px 12px;
+  background: #f0f2f8;
+  color: #263567;
+  border: 1px solid #d7dbe5;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: background .2s;
+}
+.popup-detail-btn:hover {
+  background: #e2e5f0;
+}
+.popup-detail-btn.active {
+  background: #263567;
+  color: #fff;
+  border-color: #263567;
+}
+
+.popup-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #7a8099;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+/* Tombol Toggle Sidebar di header */
+.btn-toggle-sidebar {
+  margin-left: 6px;
+  padding: 6px 12px;
+  background: #263567;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s, transform .3s;
+  pointer-events: auto;
+  line-height: 1;
+}
+.btn-toggle-sidebar:hover {
+  background: #1a274d;
+}
+.btn-toggle-sidebar.collapsed {
+  transform: rotate(180deg);
+}
+
+/* Tombol WhatsApp */
+.wa-btn {
+  display: block;
+  margin-top: 12px;
+  text-align: center;
+  background: #25D366;
+  color: #fff;
+  padding: 9px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background .2s;
+}
+
+.wa-btn:hover {
+  background: #1ebe57;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Label area bertanda di atas marker */
+.marked-label {
+  background: rgba(204, 0, 0, .88) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 2px 7px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,.3) !important;
+}
+.marked-label::before { display: none !important; }
+
+/* Tombol toggle label */
+.label-toggle {
+  position: absolute;
+  z-index: 901;
+  right: 18px;
+  bottom: 100px;
+  background: rgba(255,255,255,.95);
+  border: 1px solid #d7dbe5;
+  border-radius: 5px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #2988e8;
+  box-shadow: 0 1px 4px rgba(0,0,0,.15);
+  transition: all .2s;
+}
+.label-toggle:hover { background: #2988e8; color: #fff; }
+.label-toggle.off { color: #999; }
+
+/* Sidebar — asset body */
+.asset-body {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 700px) {
+
+  /* Sidebar menjadi overlay di mobile — default tertutup */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 300px;
+    min-width: 300px;
+    z-index: 2000;
+    transform: translateX(-100%);
+    transition: transform .3s ease;
+    box-shadow: 4px 0 20px rgba(0,0,0,.25);
+    border-right: 1px solid #d7dbe5;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar.collapsed {
+    width: 300px;
+    min-width: 300px;
+  }
+
+  /* Overlay backdrop saat sidebar terbuka */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.4);
+    z-index: 1999;
+  }
+
+  .sidebar-overlay.show {
+    display: block;
+  }
+
+  /* Tombol buka sidebar — tampil di header */
+  .sidebar-open-btn {
+    display: flex !important;
+  }
+  .sidebar-open-btn.hidden {
+    display: none !important;
+  }
+
+  /* Map header ringkas */
+  .map-header {
+    padding: 6px 8px;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .map-title {
+    font-size: 12px;
+    line-height: 1.2;
+  }
+
+  .map-title small {
+    display: none;
+  }
+
+  .map-logo {
+    width: 24px;
+    height: 24px;
+  }
+
+  .map-header .refresh {
+    font-size: 16px;
+    padding: 4px 8px;
+    margin-left: auto;
+  }
+
+  .btn-toggle-sidebar {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  /* Legend — di bawah zoom */
+  .legend {
+    left: 10px;
+    top: 132px;
+    right: auto;
+    bottom: auto;
+    font-size: 10px;
+    padding: 6px 9px;
+    background: rgba(255,255,255,.95);
+  }
+
+  .legend-row {
+    margin-bottom: 3px;
+  }
+
+  /* Tombol label toggle */
+  .label-toggle {
+    right: 10px;
+    bottom: 110px;
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  /* Badge area */
+  .area-badge {
+    left: 10px;
+    bottom: 50px;
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  /* Panel koordinat */
+  .coord-panel {
+    left: 8px !important;
+    right: 8px !important;
+    top: 55px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  /* Brand sidebar */
+  .brand {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .brand-logo {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Filter */
+  .filters {
+    padding: 10px 6px 6px;
+  }
+
+  .search {
+    height: 40px;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  /* Stats */
+  .stats {
+    padding: 6px 6px;
+    gap: 4px;
+  }
+
+  .stat-item {
+    font-size: 10px;
+    padding: 5px 3px;
+  }
+
+  .stat-item .stat-num {
+    font-size: 17px;
+  }
+
+  /* Asset card di list */
+  .list {
+    font-size: 13px;
+  }
+
+  .asset-item {
+    padding: 10px 12px;
+  }
+
+  /* Popup Leaflet lebih kecil */
+  .leaflet-popup-content {
+    font-size: 12px;
+    max-width: 240px !important;
+  }
+
+  /* Tombol zoom peta */
+  .leaflet-control-zoom a {
+    width: 28px !important;
+    height: 28px !important;
+    line-height: 28px !important;
+    font-size: 16px !important;
+  }
+}
+
+/* ---- Zoom Control ---- */
+.leaflet-control-zoom {
+  top: 70px !important;
+}
+
+/* ---- Drawing Toolbar ---- */
+.area-badge {
+  position: absolute;
+  z-index: 901;
+  left: 18px;
+  bottom: 60px;
+  background: #263567;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+
+.area-badge button {
+  background: rgba(255,255,255,.2);
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-size: 11px;
+}
+
+.area-badge button:hover {
+  background: rgba(255,255,255,.35);
+}
+
+/* Sembunyikan tombol draw yg tidak diperlukan */
+.leaflet-draw {
+  display: none !important;
+}
