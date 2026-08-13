@@ -390,6 +390,7 @@
       // Animasi saat marker diklik langsung di peta
       marker.on('click', function () {
         selectMarker(a.id);
+        map.setView([a.lat, a.lng], 17, { animate: true });
       });
     });
   }
@@ -553,6 +554,11 @@
       var marker = L.marker([area.lat, area.lng], { icon: pinIcon, zIndexOffset: 1000 }).addTo(map);
       markedAreaMarkers[area.id] = marker;
 
+      // Klik pin area bertanda: tengahkan tampilan ke titik
+      marker.on('click', function () {
+        map.setView([area.lat, area.lng], 17, { animate: true });
+      });
+
       // Popup lengkap area bertanda
       var waText = encodeURIComponent(
         'Halo, saya ingin menanyakan informasi mengenai tanah kosong:\n\n' +
@@ -608,8 +614,9 @@
         '</div>'
       );
 
-      // Klik polygon juga buka popup
+      // Klik polygon juga buka popup dan tengahkan tampilan
       polygon.on('click', function () {
+        map.setView([area.lat, area.lng], 17, { animate: true });
         marker.openPopup();
       });
 
