@@ -24,6 +24,9 @@
   // ── Data Aset (dari data.js) ──────────────────────────────
   var assets = window.SIMANTAB_ASSETS;
 
+  // ── Nomor WhatsApp default (untuk semua aset, kecuali yang punya kontak person sendiri) ──
+  var DEFAULT_WA = '0812-3973-6814';
+
   // ── Inisialisasi Peta ─────────────────────────────────────
   var mapEl = document.getElementById('map');
   if (!mapEl) {
@@ -344,6 +347,11 @@
         'Status Pemanfaatan : ' + a.statusPemanfaatan
       );
 
+      // Nomor kontak person (jika ada) → konversi ke format internasional untuk wa.me
+      // Default: semua aset pakai nomor 0812-3973-6814, kecuali yang punya kontak sendiri (mis. Ruko Friendship → Ibu Kefi)
+      var waNumber = (a.telp || DEFAULT_WA).replace(/[^0-9]/g, '').replace(/^0/, '62');
+      var waHref = 'https://wa.me/' + waNumber + '?text=' + waText;
+
       function row(label, val) {
         var display = val || '—';
         return '<tr><td>' + label + '</td><td>: ' + display + '</td></tr>';
@@ -401,6 +409,7 @@
               '<tr><td>Lokasi</td><td>: ' + a.lokasi + '</td></tr>' +
               '<tr><td>Kab/Kota</td><td>: ' + a.kabupaten + '</td></tr>' +
               '<tr><td>Pemanfaatan</td><td>: <span class="badge badge-' + a.statusClass + '">' + a.statusPemanfaatan + '</span></td></tr>' +
+              (a.kontak ? '<tr><td>Kontak</td><td>: ' + a.kontak + ' — ' + (a.telp || '—') + '</td></tr>' : '') +
             '</table>' +
           '</div>' +
 
@@ -412,8 +421,8 @@
             '<table class="popup-table">' + detailFields + '</table>' +
           '</div>' +
 
-          '<a class="wa-btn" href="https://wa.me/?text=' + waText + '" target="_blank" rel="noopener">' +
-            '💬 Tanya via WhatsApp' +
+          '<a class="wa-btn" href="' + waHref + '" target="_blank" rel="noopener">' +
+            'Tanya via WhatsApp' +
           '</a>' +
         '</div>'
       );
@@ -640,8 +649,8 @@
             '</table>' +
           '</div>' +
           '<span class="wa-btn-blink">Siap Dikerjasamakan — Hubungi</span>' +
-          '<a class="wa-btn" href="https://wa.me/?text=' + waText + '" target="_blank" rel="noopener" style="margin-top:4px;">' +
-            '💬 Tanya via WhatsApp' +
+          '<a class="wa-btn" href="https://wa.me/' + DEFAULT_WA.replace(/[^0-9]/g, '').replace(/^0/, '62') + '?text=' + waText + '" target="_blank" rel="noopener" style="margin-top:4px;">' +
+            'Tanya via WhatsApp' +
           '</a>' +
         '</div>'
       );

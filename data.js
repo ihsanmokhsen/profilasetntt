@@ -726,6 +726,8 @@ window.SIMANTAB_ASSETS = [
     kabupaten: "Kota Kupang",
     statusPemanfaatan: "Disewakan",
     statusClass: "sewa",
+    kontak: "Ibu Kefi",
+    telp: "0813-3782-8408",
     lat: -10.181442, lng: 123.600235,
     polygon: [
       [-10.181138, 123.600280],
