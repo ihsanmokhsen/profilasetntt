@@ -412,7 +412,7 @@
         '<div class="asset-body">' +
           '<div class="asset-title"><span style="display:inline-block;width:10px;height:10px;background:' + pinColor + ';border-radius:2px;margin-right:4px;vertical-align:middle;"></span>' + a.pemanfaat + '</div>' +
           '<div class="asset-meta">📍 ' + a.lokasi + '</div>' +
-          '<div class="asset-meta">🏛 ' + a.kabupaten + ' · <span class="badge badge-' + (isMarked ? 'belum-dimanfaatkan' : a.statusClass) + '">' + (isMarked ? a.statusPemanfaatan : a.statusPemanfaatan) + '</span></div>' +
+          '<div class="asset-meta">🏛 ' + a.kabupaten + ' · <span class="badge badge-' + (isMarked ? 'orange' : a.statusClass) + '">' + (isMarked ? 'Siap Dikerjasamakan' : a.statusPemanfaatan) + '</span></div>' +
           (isMarked ? '<div class="asset-meta" style="color:#cc0000;font-weight:600;">📐 Luas: ' + a.luas + '</div>' : '') +
         '</div>';
       item.onclick = function () {
