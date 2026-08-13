@@ -372,6 +372,8 @@ html, body {
 
 .dot.green { background: #34a853; }
 
+.dot.orange { background: #ff9800; }
+
 .dot.red { background: #cc0000; }
 
 .dot-pulse {
@@ -508,6 +510,8 @@ html, body {
 .badge-perlu-konfirmasi { background: #fff3cd; color: #856404; }
 
 .badge-belum-dimanfaatkan { background: #e6f4ea; color: #137333; }
+
+.badge-sewa { background: #fff3e0; color: #e65100; }
 
 .badge-dimanfaatkan { background: #d6e8fc; color: #185abc; font-weight: 600; }
 

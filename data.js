@@ -721,11 +721,11 @@ window.SIMANTAB_ASSETS = [
   },
   {
     id: 37,
-    pemanfaat: "Tanah Ruko Friendship (Eks Taman APDN)",
+    pemanfaat: "Sewa Ruko Friendship",
     lokasi: "Jl. Soeharto, depan Hotel Sylvia, Kel. Naikoten I",
     kabupaten: "Kota Kupang",
-    statusPemanfaatan: "Belum Dimanfaatkan",
-    statusClass: "belum-dimanfaatkan",
+    statusPemanfaatan: "Disewakan",
+    statusClass: "sewa",
     lat: -10.181118, lng: 123.600201,
     nama: "Tanah Bangunan Pertokoan/Rumah Toko/Koperasi",
     alamat: "Jl. Soeharto, depan Hotel Sylvia, Kel. Naikoten I, Kota Kupang, NTT",
@@ -733,12 +733,12 @@ window.SIMANTAB_ASSETS = [
     luas: "4.375 m²",
     klasifikasi: "Tanah dan bangunan aset Pemprov NTT",
     statusHak: "HP. 473/1987 — dikelola BPAD",
-    tersedia: "Tersedia — belum dimanfaatkan",
+    tersedia: "Disewakan",
     sertifikat: "HP. 473/1987",
     keterangan: "Tanah Ruko Friendship (Eks Taman APDN). Dikelola BPAD.",
     harga: "Belum dinilai",
     opd: "Badan Pendapatan dan Aset Daerah",
-    image: ""
+    image: "asset/ruko friendship.webp"
   },
   {
     id: 38,

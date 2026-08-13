@@ -299,10 +299,18 @@
     popupAnchor: [0, -22]
   });
 
+  var orangeIcon = L.divIcon({
+    className: '',
+    html: '<div style="width:22px;height:22px;background:#ff9800;border:3px solid white;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 1px 4px #555"></div>',
+    iconSize: [24, 24],
+    iconAnchor: [12, 24],
+    popupAnchor: [0, -22]
+  });
+
   // ── Tambah Marker ke Peta ─────────────────────────────────
   function addMarkers() {
     assets.forEach(function (a) {
-      var icon = a.statusClass === 'belum-dimanfaatkan' ? greenIcon : blueIcon;
+      var icon = a.statusClass === 'belum-dimanfaatkan' ? greenIcon : (a.statusClass === 'sewa' ? orangeIcon : blueIcon);
       var marker = L.marker([a.lat, a.lng], { icon: icon }).addTo(map);
       var waText = encodeURIComponent(
         'Halo, saya ingin menanyakan informasi mengenai aset:\n\n' +
@@ -404,7 +412,7 @@
     data.forEach(function (a) {
       var item = document.createElement('div');
       var isMarked = a._isMarkedArea;
-      var pinColor = isMarked ? '#cc0000' : (a.statusClass === 'belum-dimanfaatkan' ? '#34a853' : '#2988e8');
+      var pinColor = isMarked ? '#cc0000' : (a.statusClass === 'belum-dimanfaatkan' ? '#34a853' : (a.statusClass === 'sewa' ? '#ff9800' : '#2988e8'));
       item.className = 'asset';
       if (isMarked) item.classList.add('asset-marked');
       item.innerHTML =
