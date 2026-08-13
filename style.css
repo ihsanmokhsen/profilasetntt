@@ -624,6 +624,20 @@ html, body {
 }
 .marked-label::before { display: none !important; }
 
+/* Label area aset sewa (oranye) di atas marker */
+.sewa-label {
+  background: rgba(255, 152, 0, .9) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 2px 7px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,.3) !important;
+}
+.sewa-label::before { display: none !important; }
+
 /* Tombol toggle label */
 .label-toggle {
   position: absolute;

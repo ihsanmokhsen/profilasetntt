@@ -311,7 +311,31 @@
   function addMarkers() {
     assets.forEach(function (a) {
       var icon = a.statusClass === 'belum-dimanfaatkan' ? greenIcon : (a.statusClass === 'sewa' ? orangeIcon : blueIcon);
+
+      // Poligon area aset (jika ada) — digambar sebelum marker agar berada di bawah
+      if (a.polygon && a.polygon.length) {
+        var polyColor = a.statusClass === 'belum-dimanfaatkan' ? '#34a853' : (a.statusClass === 'sewa' ? '#ff9800' : '#2988e8');
+        L.polygon(a.polygon, {
+          color: polyColor,
+          weight: 3,
+          fillColor: polyColor,
+          fillOpacity: 0.18,
+          dashArray: null
+        }).addTo(map);
+      }
+
       var marker = L.marker([a.lat, a.lng], { icon: icon }).addTo(map);
+
+      // Label permanen di atas marker untuk aset yang punya area (poligon)
+      if (a.polygon && a.polygon.length) {
+        marker.bindTooltip(a.pemanfaat + ' (' + a.luas + ')', {
+          permanent: true,
+          direction: 'top',
+          offset: [0, -28],
+          className: 'sewa-label'
+        });
+      }
+
       var waText = encodeURIComponent(
         'Halo, saya ingin menanyakan informasi mengenai aset:\n\n' +
         'Pemanfaat : ' + a.pemanfaat + '\n' +

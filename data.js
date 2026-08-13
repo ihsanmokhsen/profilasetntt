@@ -726,7 +726,13 @@ window.SIMANTAB_ASSETS = [
     kabupaten: "Kota Kupang",
     statusPemanfaatan: "Disewakan",
     statusClass: "sewa",
-    lat: -10.181118, lng: 123.600201,
+    lat: -10.181442, lng: 123.600235,
+    polygon: [
+      [-10.181138, 123.600280],
+      [-10.181478, 123.599963],
+      [-10.181742, 123.600180],
+      [-10.181410, 123.600518]
+    ],
     nama: "Tanah Bangunan Pertokoan/Rumah Toko/Koperasi",
     alamat: "Jl. Soeharto, depan Hotel Sylvia, Kel. Naikoten I, Kota Kupang, NTT",
     kondisi: "Tanah/bangunan",
