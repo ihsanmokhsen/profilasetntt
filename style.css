@@ -10,7 +10,7 @@
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background: #fff;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,10 +35,7 @@
   animation: splash-pop .5s ease-out;
 }
 .splash-tap {
-  margin-top: 14px;
-  font-size: 14px;
-  color: #888;
-  animation: splash-blink 1.5s ease-in-out infinite;
+  display: none;
 }
 @keyframes splash-pop {
   from { transform: scale(.9); opacity: 0; }
