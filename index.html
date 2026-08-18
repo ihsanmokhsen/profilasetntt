@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profil Aset NTT</title>
+  <title>SI MANTAB NTT — Sistem Informasi Manajemen Aset Tanah dan Bangunan</title>
   <link rel="icon" href="asset/logo.png">
 
   <link rel="stylesheet"
@@ -25,7 +25,7 @@
   <!-- Splash Screen -->
   <div id="splash" class="splash">
     <div class="splash-inner">
-      <img src="asset/popup.webp" alt="Profil Aset NTT" class="splash-img">
+      <img src="asset/popup.webp" alt="SI MANTAB NTT" class="splash-img">
       <p class="splash-tap">Ketuk untuk masuk</p>
     </div>
   </div>
@@ -36,8 +36,8 @@
     <div class="brand">
       <img src="asset/logo.png" alt="Logo" class="brand-logo">
       <div class="brand-text">
-        <strong>PROFIL ASET NTT</strong>
-        <span class="muted">PROVINSI NUSA TENGGARA TIMUR</span>
+        <strong>SI MANTAB NTT</strong>
+        <span class="muted">Sistem Informasi Manajemen Aset Tanah dan Bangunan</span>
       </div>
       <button id="closeSidebar" class="sidebar-close" title="Tutup sidebar">✕</button>
     </div>
@@ -47,7 +47,7 @@
         <option value="">Semua Kabupaten/Kota</option>
       </select>
 
-      <input id="nama" class="search" type="search" placeholder="🔍 Cari Pemanfaat ...">
+      <input id="nama" class="search" type="search" placeholder="🔍 Cari apa saja dari data aset ...">
       <select id="opd" class="search">
         <option value="">Semua Perangkat Daerah</option>
       </select>
@@ -56,6 +56,9 @@
     <div id="stats" class="stats"></div>
     <div id="list" class="list"></div>
     <div id="empty" class="empty">Aset tidak ditemukan.</div>
+    <a class="official-site-btn" href="https://bapenda.nttprov.go.id" target="_blank" rel="noopener noreferrer">
+      🌐 Website Resmi BPAD
+    </a>
   </aside>
 
   <main class="map-wrap">
@@ -63,8 +66,9 @@
       <div class="map-title">
         <img src="asset/logo.png" alt="Logo" class="map-logo">
         <div>
-          PROFIL ASET NTT
-          <small>Peta Pemanfaat & Aset Provinsi NTT</small>
+          SI MANTAB NTT
+          <small>Sistem Informasi Manajemen Aset Tanah dan Bangunan</small>
+          <small class="tagline">“Data Aset Akurat, Pengelolaan Lebih Mantap.”</small>
         </div>
       </div>
       <button id="openSidebar" class="sidebar-open-btn" title="Buka sidebar">☰</button>
@@ -75,11 +79,10 @@
     <div id="map"></div>
 
     <div class="legend">
-      <div class="legend-row"><span class="dot blue"></span> Dimanfaatkan / Pihak Ketiga</div>
-      <div class="legend-row"><span class="dot green"></span> Tanah Kosong (Belum Dimanfaatkan)</div>
-      <div class="legend-row"><span class="dot orange"></span> Disewakan</div>
-      <div class="legend-row"><span class="dot red"></span> Tanah Kosong Prioritas — <strong>Siap Dikerjasamakan</strong></div>
-      <div class="legend-row"><span class="dot-pulse"></span> Lokasi terpilih</div>
+      <button class="legend-toggle active" data-filter="dimanfaatkan" type="button"><span class="dot blue"></span> Dimanfaatkan / Pihak Ketiga</button>
+      <button class="legend-toggle active" data-filter="belum-dimanfaatkan" type="button"><span class="dot green"></span> Tanah Kosong (Belum Dimanfaatkan)</button>
+      <button class="legend-toggle active" data-filter="sewa" type="button"><span class="dot orange"></span> Disewakan</button>
+      <button class="legend-toggle active" data-filter="prioritas" type="button"><span class="dot red"></span> Tanah Kosong Prioritas — <strong>Siap Dikerjasamakan</strong></button>
     </div>
 
     <button id="toggleLabels" class="label-toggle" title="Sembunyikan/Tampilkan Label">🏷 Label</button>

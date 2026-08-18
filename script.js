@@ -285,6 +285,18 @@
 
   // ── Icon Marker Kustom ────────────────────────────────────
   var markers = {};
+  var markersByFilter = {
+    dimanfaatkan: [],
+    'belum-dimanfaatkan': [],
+    sewa: [],
+    prioritas: []
+  };
+
+  function filterForAsset(asset) {
+    if (asset.statusClass === 'belum-dimanfaatkan') return 'belum-dimanfaatkan';
+    if (asset.statusClass === 'sewa') return 'sewa';
+    return 'dimanfaatkan';
+  }
 
   var blueIcon = L.divIcon({
     className: '',
@@ -427,6 +439,7 @@
         '</div>'
       );
       markers[a.id] = marker;
+      markersByFilter[filterForAsset(a)].push(marker);
 
       // Animasi saat marker diklik langsung di peta
       marker.on('click', function () {
@@ -472,22 +485,40 @@
   }
 
   // ── Filter Aset ───────────────────────────────────────────
+  function searchableValue(value) {
+    if (value === null || value === undefined) return '';
+    if (typeof value === 'object') return JSON.stringify(value);
+    return String(value);
+  }
+
+  function matchesGlobalSearch(asset, query) {
+    if (!query) return true;
+    return Object.keys(asset).some(function (key) {
+      return searchableValue(asset[key]).toLowerCase().indexOf(query) !== -1;
+    });
+  }
+
   function filterAssets() {
     var kab = document.getElementById('kabupaten').value.toLowerCase();
     var nama = document.getElementById('nama').value.toLowerCase();
     var opd = document.getElementById('opd').value.toLowerCase();
 
     var filtered = assets.filter(function (a) {
-      return (!kab || a.kabupaten.toLowerCase().indexOf(kab) !== -1) &&
-             (!nama || a.pemanfaat.toLowerCase().indexOf(nama) !== -1) &&
-             (!opd || a.opd.toLowerCase().indexOf(opd) !== -1);
+      return (!kab || searchableValue(a.kabupaten).toLowerCase().indexOf(kab) !== -1) &&
+             matchesGlobalSearch(a, nama) &&
+             (!opd || searchableValue(a.opd).toLowerCase().indexOf(opd) !== -1);
     });
 
-    // Selalu sertakan marked areas di atas
+    // Area prioritas juga ikut pencarian global
     var marked = (window.SIMANTAB_MARKED_AREAS || []).map(function (area) {
       return Object.assign({}, area, { _isMarkedArea: true });
     });
-    var combined = marked.concat(filtered);
+    var filteredMarked = marked.filter(function (area) {
+      return (!kab || searchableValue(area.kabupaten).toLowerCase().indexOf(kab) !== -1) &&
+             matchesGlobalSearch(area, nama) &&
+             (!opd || searchableValue(area.opd).toLowerCase().indexOf(opd) !== -1);
+    });
+    var combined = filteredMarked.concat(filtered);
 
     renderList(combined);
 
@@ -581,7 +612,7 @@
         fillColor: '#ff4d6d',
         fillOpacity: 0.25,
         dashArray: null
-      }).addTo(map);
+      });
 
       // Pin di tengah area
       var pinIcon = L.divIcon({
@@ -592,8 +623,10 @@
         popupAnchor: [0, -24]
       });
 
-      var marker = L.marker([area.lat, area.lng], { icon: pinIcon, zIndexOffset: 1000 }).addTo(map);
+      var marker = L.marker([area.lat, area.lng], { icon: pinIcon, zIndexOffset: 1000 });
+      var areaLayer = L.layerGroup([polygon, marker]).addTo(map);
       markedAreaMarkers[area.id] = marker;
+      markersByFilter.prioritas.push(areaLayer);
 
       // Klik pin area bertanda: tengahkan tampilan ke titik
       marker.on('click', function () {
@@ -686,6 +719,23 @@
       markedAreaMarkerList.forEach(function (m) { m.closeTooltip(); });
       btn.classList.add('off');
     }
+  });
+
+  // ── Toggle Kategori Marker ────────────────────────────────
+  document.querySelectorAll('.legend-toggle').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var filter = this.getAttribute('data-filter');
+      var visible = this.classList.toggle('active');
+      markersByFilter[filter].forEach(function (marker) {
+        if (visible) {
+          marker.addTo(map);
+        } else {
+          map.removeLayer(marker);
+        }
+      });
+      this.setAttribute('aria-pressed', visible ? 'true' : 'false');
+    });
+    button.setAttribute('aria-pressed', 'true');
   });
 
   // ── Inisialisasi Awal ─────────────────────────────────────
