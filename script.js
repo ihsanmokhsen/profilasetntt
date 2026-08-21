@@ -602,6 +602,22 @@
   var markedAreaMarkers = {};
   var labelMarkerList = [];
   var labelsVisible = true;
+  var LABEL_MIN_ZOOM = 15;
+
+  // Hindari penumpukan label saat peta masih terlalu jauh.
+  function updateLabelsByZoom() {
+    var showLabels = labelsVisible && map.getZoom() >= LABEL_MIN_ZOOM;
+    labelMarkerList.forEach(function (marker) {
+      if (showLabels) {
+        marker.openTooltip();
+      } else {
+        marker.closeTooltip();
+      }
+    });
+  }
+
+  map.on('zoomend', updateLabelsByZoom);
+
   function addMarkedAreas() {
     var marked = window.PROFIL_ASET_NTT_MARKED_AREAS || [];
     if (!marked.length) return;
@@ -715,12 +731,11 @@
     labelsVisible = !labelsVisible;
     var btn = this;
     if (labelsVisible) {
-      labelMarkerList.forEach(function (m) { m.openTooltip(); });
       btn.classList.remove('off');
     } else {
-      labelMarkerList.forEach(function (m) { m.closeTooltip(); });
       btn.classList.add('off');
     }
+    updateLabelsByZoom();
   });
 
   // ── Toggle Kategori Marker ────────────────────────────────
@@ -743,6 +758,7 @@
   // ── Inisialisasi Awal ─────────────────────────────────────
   addMarkers();
   addMarkedAreas();
+  updateLabelsByZoom();
   updateStats();
   
   // Gabungkan marked areas ke assets list untuk sidebar

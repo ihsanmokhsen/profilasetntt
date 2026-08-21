@@ -669,6 +669,9 @@ html, body {
   padding: 2px 7px !important;
   font-size: 11px !important;
   font-weight: 700 !important;
+  max-width: 180px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
   white-space: nowrap !important;
   box-shadow: 0 1px 4px rgba(0,0,0,.3) !important;
 }
@@ -683,6 +686,9 @@ html, body {
   padding: 2px 7px !important;
   font-size: 11px !important;
   font-weight: 700 !important;
+  max-width: 180px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
   white-space: nowrap !important;
   box-shadow: 0 1px 4px rgba(0,0,0,.3) !important;
 }
