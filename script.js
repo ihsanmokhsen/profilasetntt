@@ -22,7 +22,7 @@
   'use strict';
 
   // ── Data Aset (dari data.js) ──────────────────────────────
-  var assets = window.SIMANTAB_ASSETS;
+  var assets = window.PROFIL_ASET_NTT_ASSETS;
 
   // ── Nomor WhatsApp default (untuk semua aset, kecuali yang punya kontak person sendiri) ──
   var DEFAULT_WA = '0812-3973-6814';
@@ -30,7 +30,7 @@
   // ── Inisialisasi Peta ─────────────────────────────────────
   var mapEl = document.getElementById('map');
   if (!mapEl) {
-    console.error('SIMANTAB: Elemen #map tidak ditemukan!');
+    console.error('Profil Aset NTT: Elemen #map tidak ditemukan!');
     return;
   }
 
@@ -158,7 +158,7 @@
     });
 
     // Prepend marked areas
-    var marked = (window.SIMANTAB_MARKED_AREAS || []).map(function (area) {
+    var marked = (window.PROFIL_ASET_NTT_MARKED_AREAS || []).map(function (area) {
       return Object.assign({}, area, { _isMarkedArea: true });
     });
     renderList(marked.concat(inside));
@@ -175,7 +175,7 @@
   // Tombol hapus area
   document.getElementById('clearArea').addEventListener('click', function () {
     clearDrawnArea();
-    var marked = (window.SIMANTAB_MARKED_AREAS || []).map(function (area) {
+    var marked = (window.PROFIL_ASET_NTT_MARKED_AREAS || []).map(function (area) {
       return Object.assign({}, area, { _isMarkedArea: true });
     });
     renderList(marked.concat(assets));
@@ -510,7 +510,7 @@
     });
 
     // Area prioritas juga ikut pencarian global
-    var marked = (window.SIMANTAB_MARKED_AREAS || []).map(function (area) {
+    var marked = (window.PROFIL_ASET_NTT_MARKED_AREAS || []).map(function (area) {
       return Object.assign({}, area, { _isMarkedArea: true });
     });
     var filteredMarked = marked.filter(function (area) {
@@ -536,7 +536,7 @@
     document.getElementById('opd').value = '';
     clearDrawnArea();
     selectMarker(null);
-    var marked = (window.SIMANTAB_MARKED_AREAS || []).map(function (area) {
+    var marked = (window.PROFIL_ASET_NTT_MARKED_AREAS || []).map(function (area) {
       return Object.assign({}, area, { _isMarkedArea: true });
     });
     renderList(marked.concat(assets));
@@ -578,7 +578,7 @@
 
   // ── Update Statistik Ringkasan ────────────────────────────
   function updateStats() {
-    var markedCount = (window.SIMANTAB_MARKED_AREAS || []).length;
+    var markedCount = (window.PROFIL_ASET_NTT_MARKED_AREAS || []).length;
     var total = assets.length + markedCount;
     var dimanfaatkan = 0;
     var belum = markedCount;
@@ -601,7 +601,7 @@
   var markedAreaMarkerList = [];
   var labelsVisible = true;
   function addMarkedAreas() {
-    var marked = window.SIMANTAB_MARKED_AREAS || [];
+    var marked = window.PROFIL_ASET_NTT_MARKED_AREAS || [];
     if (!marked.length) return;
 
     marked.forEach(function (area) {
@@ -745,7 +745,7 @@
   
   // Gabungkan marked areas ke assets list untuk sidebar
   var allItems = assets.slice();
-  (window.SIMANTAB_MARKED_AREAS || []).forEach(function (area) {
+  (window.PROFIL_ASET_NTT_MARKED_AREAS || []).forEach(function (area) {
     allItems.unshift(Object.assign({}, area, { _isMarkedArea: true }));
   });
   renderList(allItems);

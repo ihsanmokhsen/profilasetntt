@@ -3,7 +3,7 @@
    Poligon khusus dengan area transparan merah muda
    ============================================================ */
 
-window.SIMANTAB_MARKED_AREAS = [
+window.PROFIL_ASET_NTT_MARKED_AREAS = [
   {
     id: 1,
     nama: "Sisa Tanah Kosong Bangunan Hotel Sasando",

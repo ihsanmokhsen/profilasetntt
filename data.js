@@ -4,7 +4,7 @@
    Provinsi Nusa Tenggara Timur
    ============================================================ */
 
-window.SIMANTAB_ASSETS = [
+window.PROFIL_ASET_NTT_ASSETS = [
   {
     id: 1,
     pemanfaat: "PT Flobamor – Hotel Sasando",
