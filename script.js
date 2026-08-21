@@ -341,15 +341,17 @@
 
       var marker = L.marker([a.lat, a.lng], { icon: icon }).addTo(map);
 
-      // Label permanen di atas marker untuk aset yang punya area (poligon)
-      if (a.polygon && a.polygon.length) {
-        marker.bindTooltip(a.pemanfaat + ' (' + a.luas + ')', {
-          permanent: true,
-          direction: 'top',
-          offset: [0, -28],
-          className: 'sewa-label'
-        });
-      }
+      // Label permanen di atas setiap marker
+      var assetLabel = a.polygon && a.polygon.length
+        ? a.pemanfaat + ' (' + a.luas + ')'
+        : (a.pemanfaat || a.nama || 'Aset');
+      marker.bindTooltip(assetLabel, {
+        permanent: true,
+        direction: 'top',
+        offset: [0, -28],
+        className: a.statusClass === 'sewa' ? 'sewa-label' : 'asset-label'
+      });
+      labelMarkerList.push(marker);
 
       var waText = encodeURIComponent(
         'Halo, saya ingin menanyakan informasi mengenai aset:\n\n' +
@@ -598,7 +600,7 @@
 
   // ── Render Area Bertanda (Poligon + Pin) ──────────────────
   var markedAreaMarkers = {};
-  var markedAreaMarkerList = [];
+  var labelMarkerList = [];
   var labelsVisible = true;
   function addMarkedAreas() {
     var marked = window.PROFIL_ASET_NTT_MARKED_AREAS || [];
@@ -704,19 +706,19 @@
       });
 
       // Simpan marker untuk toggle label
-      markedAreaMarkerList.push(marker);
+      labelMarkerList.push(marker);
     });
   }
 
-  // ── Toggle Label Area Bertanda ────────────────────────────
+  // ── Toggle Semua Label Marker ─────────────────────────────
   document.getElementById('toggleLabels').addEventListener('click', function () {
     labelsVisible = !labelsVisible;
     var btn = this;
     if (labelsVisible) {
-      markedAreaMarkerList.forEach(function (m) { m.openTooltip(); });
+      labelMarkerList.forEach(function (m) { m.openTooltip(); });
       btn.classList.remove('off');
     } else {
-      markedAreaMarkerList.forEach(function (m) { m.closeTooltip(); });
+      labelMarkerList.forEach(function (m) { m.closeTooltip(); });
       btn.classList.add('off');
     }
   });

@@ -661,6 +661,20 @@ html, body {
 }
 
 /* Label area bertanda di atas marker */
+.asset-label {
+  background: rgba(38, 53, 103, .92) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 2px 7px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,.3) !important;
+}
+.asset-label::before { display: none !important; }
+
+/* Label area bertanda di atas marker */
 .marked-label {
   background: rgba(204, 0, 0, .88) !important;
   color: #fff !important;
